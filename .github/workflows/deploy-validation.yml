@@ -2,7 +2,7 @@ name: Build and deploy on validation environment
 
 on:
   push:
-    branches: [ validation ]
+    branches: [ main ]
 
 jobs:
   build:
