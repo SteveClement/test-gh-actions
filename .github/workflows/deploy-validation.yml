@@ -32,7 +32,10 @@ jobs:
       run: ssh-keyscan -p ${{ secrets.BASTION_SSH_PORT }} -H ${{ secrets.BASTION_HOST }} >> ~/.ssh/known_hosts
 
     - name: Adding known hosts on source host from target host
-      run: ssh -p ${{ secrets.BASTION_SSH_PORT }} lhcfofront@${{ secrets.BASTION_HOST }} ssh-keyscan -H ${{ secrets.VALIDATION_ENV_HOST }} >> ~/.ssh/known_hosts
+      run: ssh -p ${{ secrets.BASTION_SSH_PORT }} cyberlux@${{ secrets.BASTION_HOST }} ssh-keyscan -H ${{ secrets.VALIDATION_ENV_HOST }} >> ~/.ssh/known_hosts
+
+    - name: Empty target dir
+      run: ssh -J cyberlux@${{ secrets.BASTION_HOST }}:${{ secrets.BASTION_SSH_PORT }} cyfofront@${{ secrets.VALIDATION_ENV_HOST }} 'rm -rf /tmp/tester/*'
 
     - name: Deploy with scp
-      run: scp -r -J lhcfofront@${{ secrets.BASTION_HOST }}:${{ secrets.BASTION_SSH_PORT }} * cyfofront@${{ secrets.VALIDATION_ENV_HOST }}:/tmp/tester/
+      run: scp -r -J cyberlux@${{ secrets.BASTION_HOST }}:${{ secrets.BASTION_SSH_PORT }} * cyfofront@${{ secrets.VALIDATION_ENV_HOST }}:/tmp/tester/
